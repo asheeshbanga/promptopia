@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, Suspense } from 'react'
 import PromptCard from './PromptCard';
 
 const PromptCardList = ({ data, handleTagClick }) => {
@@ -67,31 +67,33 @@ const Feed = () => {
   }
 
   return (
-    <section className='feed'>
-      <form className='relative w-full flex-center'>
-        <input
-          type="text"
-          placeholder='Search for a tag or username'
-          value={searchText}
-          onChange={handleSearchChange}
-          required
-          className='search_input peer'
-        />
-      </form>
+    <Suspense>
+      <section className='feed'>
+        <form className='relative w-full flex-center'>
+          <input
+            type="text"
+            placeholder='Search for a tag or username'
+            value={searchText}
+            onChange={handleSearchChange}
+            required
+            className='search_input peer'
+          />
+        </form>
 
-      {/* All Prompts */}
-      {searchText ? (
-      <PromptCardList
-        data={searchedResults}
-        handleTagClick={handleTagClick}
-      />
-      ) : (
-        <PromptCardList 
-          data={posts}
-          handleTagClick={handleTagClick}
-        />
-      )}
-    </section>
+        {/* All Prompts */}
+        {searchText ? (
+          <PromptCardList
+            data={searchedResults}
+            handleTagClick={handleTagClick}
+          />
+        ) : (
+          <PromptCardList
+            data={posts}
+            handleTagClick={handleTagClick}
+          />
+        )}
+      </section>
+    </Suspense>
   )
 }
 
