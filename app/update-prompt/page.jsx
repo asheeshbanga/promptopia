@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, Suspense } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 
 export const dynamic = "force-dynamic";
@@ -10,27 +10,27 @@ import Form from "@components/Form";
 
 const EditPrompt = () => {
 
-    const router = useRouter();
-    const searchParams = useSearchParams();
-    const promptId = searchParams.get('id');
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const promptId = searchParams.get('id');
 
-    const [submitting, setSubmitting] = useState(false);
-    const [post, setPost] = useState({
-        prompt: '',
-        tag: ''
-    });
+  const [submitting, setSubmitting] = useState(false);
+  const [post, setPost] = useState({
+    prompt: '',
+    tag: ''
+  });
 
-    useEffect(() => {
-        const getPromptDetails = async () => {
-            const res = await fetch(`/api/prompt/${promptId}`);
-            const data = await res.json();
+  useEffect(() => {
+    const getPromptDetails = async () => {
+      const res = await fetch(`/api/prompt/${promptId}`);
+      const data = await res.json();
 
-            setPost({
-                prompt: data.prompt,
-                tag: data.tag
-            })
-        }
-        if (promptId) getPromptDetails();
+      setPost({
+        prompt: data.prompt,
+        tag: data.tag
+      })
+    }
+    if (promptId) getPromptDetails();
   }, [promptId]);
 
   const editPrompt = async (e) => {
@@ -58,15 +58,17 @@ const EditPrompt = () => {
     }
   }
 
-return (
-    <Form
+  return (
+    <Suspense>
+      <Form
         type="Edit"
         post={post}
         setPost={setPost}
         submitting={submitting}
         handleSubmit={editPrompt}
-    />
-)
+      />
+    </Suspense>
+  )
 }
 
 export default EditPrompt;
