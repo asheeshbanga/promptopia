@@ -27,7 +27,7 @@ const Feed = () => {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await fetch('/api/prompt');
+      const res = await fetch('/api/prompt', { cache: 'no-store'});
       const data = await res.json();
       setPosts(data);
     }
@@ -51,7 +51,7 @@ const Feed = () => {
     // debounce method
     setSearchTimeout(
       setTimeout(() => {
-        const searchResult = filterPrompts(e.target.value);
+        const searchResult = filterPrompts(searchText);
         setSearchedResults(searchResult);
       }, 500)
     );
